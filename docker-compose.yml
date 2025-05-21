@@ -1,0 +1,10 @@
+services:
+  api_exams: # Servicio de la API de ventas
+    build: # Construcción de la imagen
+      context: . # Contexto de construcción
+      dockerfile: Dockerfile # Dockerfile a utilizar
+    ports: # Puertos a exponer
+      - "8084:8084"
+    command: ["java", "-jar", "/exams_app/exams_app.jar"] # Comando para ejecutar la aplicación
+    env_file:
+      - .env # Archivo de variables de entorno
