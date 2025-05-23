@@ -1,5 +1,6 @@
 package com.briones.grades.service;
 
+import com.briones.grades.exception.ResourceNotFoundException;
 import com.briones.grades.model.Exam;
 import com.briones.grades.repository.ExamRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,8 @@ public class ExamService implements ICrudService<Exam>{
 
     @Override
     public Exam findById(Long id) {
-        return examRepository.findById(id).get();
+        return examRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Exam not found with id: " + id));
     }
 
     @Override
