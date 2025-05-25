@@ -1,13 +1,16 @@
 package com.briones.grades.controller;
 
+import com.briones.grades.exception.BadRequestException;
 import com.briones.grades.exception.ResourceNotFoundException;
 import com.briones.grades.model.Exam;
 import com.briones.grades.model.dto.response.UserResponseDto;
 import com.briones.grades.service.ExamService;
 import com.briones.grades.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +43,7 @@ public class ExamController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Exam updateExam(@PathVariable Long id, @RequestBody Exam exam) {
+    public Exam updateExam(@PathVariable Long id,@Valid @RequestBody Exam exam) {
         Exam existinExam = examService.findById(id);
         if (existinExam == null) throw new ResourceNotFoundException("Exam not found with id: " + id);
         if (exam.getDescription() != null) existinExam.setDescription(exam.getDescription());
@@ -52,11 +55,17 @@ public class ExamController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Exam addExam(@RequestBody Exam exam, @RequestParam(value = "userId", required = false) UUID userId) {
+    public Exam addExam(@Valid @RequestBody Exam exam, @RequestParam(value = "userId", required = false) UUID userId) {
 
         if (userId != null) {
-            UserResponseDto user = userService.fetchUserById(userId);
-            exam.setCreatedBy(user.email());
+            try {
+                UserResponseDto user = userService.fetchUserById(userId);
+                exam.setCreatedBy(user.email());
+            } catch (RestClientException e) {
+                throw new BadRequestException("Failed to communicate with the user service.");
+            } catch (Exception e) {
+                throw new BadRequestException("Unexpected error occurred while retrieving the user.");
+            }
         }
         
         return examService.save(exam);
