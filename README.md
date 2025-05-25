@@ -1,10 +1,10 @@
-# 📝 API de Gestión de Exámenes
+# API de Gestión de Exámenes (Evaluaciones)
 
 Este microservicio permite administrar los exámenes y conectarse con el sistema de usuarios a través de un cliente REST.
 
 ---
 
-## 🚀 Tecnologías Usadas
+## Tecnologías Usadas
 
 - Java 17  
 - Spring Boot 3+  
@@ -17,16 +17,16 @@ Este microservicio permite administrar los exámenes y conectarse con el sistema
 
 ---
 
-## 📚 Endpoints
+## Endpoints
 
-### ✅ Obtener todos los exámenes
+### Obtener todos los exámenes
 
 **GET** `/api/v1/exams`  
 Devuelve una lista de todos los exámenes.
 
 ---
 
-### 🔍 Obtener examen por ID
+### Obtener examen por ID
 
 **GET** `/api/v1/exams/{id}`
 
@@ -35,7 +35,7 @@ Devuelve una lista de todos los exámenes.
 
 ---
 
-### ➕ Agregar un examen
+### Agregar un examen
 
 **POST** `/api/v1/exams`
 
@@ -58,7 +58,7 @@ Devuelve una lista de todos los exámenes.
 
 ---
 
-### 📝 Actualizar examen
+### Actualizar examen
 
 **PUT** `/api/v1/exams/{id}`
 
@@ -68,7 +68,7 @@ Devuelve una lista de todos los exámenes.
 
 ---
 
-### ❌ Eliminar examen
+### Eliminar examen
 
 **DELETE** `/api/v1/exams/{id}`
 
@@ -78,7 +78,7 @@ Devuelve una lista de todos los exámenes.
 
 ---
 
-## ⚙️ Manejo de Errores
+## Manejo de Errores
 
 - `404 Not Found`: Cuando no se encuentra el recurso solicitado.
 - `400 Bad Request`: Para validaciones de entrada no válidas (definido por `BadRequestException`).
@@ -87,7 +87,7 @@ Los errores incluyen mensajes descriptivos y timestamp.
 
 ---
 
-## 🔁 Comunicación con Microservicio de Usuarios
+## Comunicación con Microservicio de Usuarios
 
 - Se utiliza `RestTemplate` para hacer solicitudes HTTP al servicio de usuarios.
 - El endpoint del servicio se configura con la propiedad:
@@ -114,7 +114,7 @@ docker run -p 8084:8084 grades-api
 
 ---
 
-## 📌 Recomendaciones
+## Recomendaciones
 
 - Usa `@Valid` para asegurar la integridad de datos en futuras extensiones.
 - Configura correctamente el archivo `application.properties` para la base de datos y URL del microservicio de usuarios.
@@ -135,6 +135,6 @@ users.api.url=http://localhost:8084
 
 ---
 
-## 👤 Autor
+## Autores
 
-**Nombre:** Jaime Loff
+**Nombre:** Leonel Briones / Jaime Loff
