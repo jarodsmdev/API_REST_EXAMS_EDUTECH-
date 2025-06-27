@@ -6,7 +6,7 @@ Este microservicio permite administrar los exámenes y conectarse con el sistema
 
 ## Tecnologías Usadas
 
-- Java 17  
+- Java 17
 - Spring Boot 3+  
 - Spring Data JPA  
 - MySQL Database  
@@ -89,12 +89,25 @@ Los errores incluyen mensajes descriptivos y timestamp.
 
 ## Comunicación con Microservicio de Usuarios
 
-- Se utiliza `RestTemplate` para hacer solicitudes HTTP al servicio de usuarios.
-- El endpoint del servicio se configura con la propiedad:
+Comunicación con el Microservicio de Usuarios
+Este microservicio (api-grades) se comunica con el microservicio de usuarios (api-users) repositorio en este enlace: [https://github.com/jarodsmdev/API_REST_USER_EDUTECH](https://github.com/jarodsmdev/API_REST_USER_EDUTECH) a través de HTTP usando RestTemplate. La URL del servicio de usuarios en este proyecto se configura mediante variables de entorno, permitiendo flexibilidad entre entornos de desarrollo y producción.
+
+Configuración del Endpoint
+
+El valor de la URL se define usando la propiedad:
 
 ```properties
-users.api.url=http://localhost:8081
+users.api.url=${API_USER_URL}
+
 ```
+
+Esta propiedad se encuentra en el archivo `application.properties` y se resuelve con la variable de entorno `API_USER_URL`, que puedes definir en un archivo `.env` o directamente en tu entorno de ejecución.:
+
+```properties
+API_USER_URL=http://api-users:8081
+```
+
+En ejecución local sin Docker Compose, puedes usar `http://localhost:8081`.
 
 ---
 
@@ -109,14 +122,25 @@ docker build -t grades-api .
 ### Correr contenedor
 
 ```bash
-docker run -p 8084:8084 grades-api
+docker run -d \
+  -p 8084:8084 \
+  -e DB_ENDPOINT=tu-endpoint.mysql.amazonaws.com \
+  -e DB_PORT=3306 \
+  -e DB_NAME=nombre_base_datos \
+  -e DB_USERNAME=usuario \
+  -e DB_PASSWORD=contraseña \
+  -e API_USER_URL=http://localhost:8081 \
+  --name grades-api \
+  grades-api
+
 ```
+
+**Recomendación**: Usa docker compose para una experiencia más sencilla y consistente que se incluye dentro de este repositorio y se encuentra configurado para que pueda obtener las variables de entorno directamente del archivo `.env` que no se incluye en el repositorio (pero se ha documentado acá previamente). Que si bien no es obligatorio, es altamente recomendable para facilitar la configuración y despliegue del microservicio.
 
 ---
 
 ## Recomendaciones
 
-- Usa `@Valid` para asegurar la integridad de datos en futuras extensiones.
 - Configura correctamente el archivo `application.properties` para la base de datos y URL del microservicio de usuarios.
 
 Ejemplo de configuración:
